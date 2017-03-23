@@ -1,0 +1,102 @@
+package environment;
+
+import processing.core.PApplet;
+import processing.core.PVector;
+
+import java.util.ArrayList;
+import java.lang.Runtime;
+
+/**
+ * Created by ujansengupta on 3/21/17.
+ */
+public class PathFinder
+{
+    private GraphSearch search;
+    private Environment environment;
+    private PApplet app;
+    private PVector numTiles;
+    private ArrayList<Integer> path;
+    private PVector prevStart, prevEnd;
+    private int startIndex, endIndex;
+    private GraphSearch.SEARCHMODE mode;
+    private Graph graph;
+
+
+
+    public PathFinder(PApplet theApplet, Environment environment)
+    {
+        this.search = new GraphSearch();
+        this.app = theApplet;
+        this.environment = environment;
+        this.numTiles = environment.getNumTiles();
+        this.graph = environment.gameGraph;
+    }
+
+    public ArrayList<Integer> findPath(PVector startNode, PVector endNode, GraphSearch.SEARCHMODE mode)
+    {
+        startIndex = (int) (startNode.y * numTiles.y + startNode.x);
+        endIndex = (int) (endNode.y * numTiles.y + endNode.x);
+
+        if (graph.invalidNodes.contains(startIndex) || graph.invalidNodes.contains(endIndex))
+            return path;
+
+        this.prevStart = startNode;
+        this.prevEnd = endNode;
+        this.mode = mode;
+
+
+
+        Runtime run = Runtime.getRuntime();
+
+        long initialMemory = run.totalMemory() - run.freeMemory();
+        System.out.println("Initial Memory : " + initialMemory/Math.pow(10, 6) + " MB");
+        int start = app.millis();
+
+        switch (mode)
+        {
+            case DIJKSTRA:
+                path = search.dijkstraSearch(startIndex, endIndex, environment.gameGraph);
+                break;
+            case ASTAR:
+                path = search.aStarSearch(startIndex, endIndex, environment.gameGraph);
+                break;
+
+            default:
+                path = search.aStarSearch(startIndex, endIndex, environment.gameGraph);
+                break;
+        }
+
+        int end = app.millis();
+        long finalMemory = run.totalMemory() - run.freeMemory();
+        System.out.println("Final Memory : " + finalMemory/Math.pow(10, 6) + " MB \n");
+
+
+        System.out.println("Mode : " + mode + "\n");
+        System.out.println("Time taken : " + (end - start) + " milliseconds");
+        System.out.println("Memory consumed : " + (finalMemory - initialMemory)/Math.pow(10, 6) + " MB");
+        System.out.println("Fill : " + search.fill + " nodes");
+        System.out.println("Path Length : " + path.size() + " nodes");
+
+        return path;
+    }
+
+
+    public void renderSearch()
+    {
+        for (int node : search.getClosedList())
+        {
+            environment.colorNode(node, new PVector(71, 153 , 131));
+        }
+
+        for (int node : path)
+        {
+            environment.colorNode(node, new PVector(153, 71 , 97));
+        }
+
+        environment.colorNode(startIndex, new PVector(255, 0, 0));
+        environment.colorNode(endIndex, new PVector(0, 255, 0));
+
+    }
+
+
+}

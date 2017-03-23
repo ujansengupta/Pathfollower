@@ -15,14 +15,19 @@ public class Graph
 
     public Map<Integer, Node> nodeMap = new HashMap<>();
     public Map<Integer, ArrayList<Edge>> adjacencyList;
+    public Set<Integer> invalidNodes;
+
+    float diagonalWeight = (float)Math.sqrt(2);
+    float edgeWeight = 1f;
 
     public Graph()
     {
         adjacencyList = new HashMap<>();
     }
 
-    public Map<Integer, ArrayList<Edge>> buildGraph(ArrayList<Integer> invalidNodes, PVector numTiles)
+    public Map<Integer, ArrayList<Edge>> buildGraph(Set<Integer> invalidNodes, PVector numTiles)
     {
+        this.invalidNodes = invalidNodes;
         int index;
         int tilesX = (int)numTiles.x;
         int tilesY = (int)numTiles.y;
@@ -43,28 +48,28 @@ public class Graph
                 /* Check neighbours clockwise */
 
                 if (j - 1 >= 0 && (!invalidNodes.contains(index - 1)))
-                    edges.add(new Edge(index, index - 1, 1));
-
-                if (j - 1 >= 0 && i + 1 < tilesY && (!invalidNodes.contains(index - 1 + tilesX)))
-                    edges.add(new Edge(index, index - 1 + tilesX, (float)Math.sqrt(2)));
+                    edges.add(new Edge(index, index - 1, edgeWeight));
 
                 if (i + 1 < tilesY && (!invalidNodes.contains(index + tilesX)))
-                    edges.add(new Edge(index, index + tilesX, 1));
-
-                if (j + 1 < tilesX && i + 1 < tilesY && (!invalidNodes.contains(index + 1 + tilesX)))
-                    edges.add(new Edge(index, index + 1 + tilesX, (float)Math.sqrt(2)));
+                    edges.add(new Edge(index, index + tilesX, edgeWeight));
 
                 if (j + 1 < tilesX && (!invalidNodes.contains(index + 1)))
-                    edges.add(new Edge(index, index + 1, 1));
-
-                if (j + 1 < tilesX && i - 1 >= 0 && (!invalidNodes.contains(index + 1 - tilesX)))
-                    edges.add(new Edge(index, index + 1 - tilesX, (float)Math.sqrt(2)));
+                    edges.add(new Edge(index, index + 1, edgeWeight));
 
                 if (i - 1 >= 0 && (!invalidNodes.contains(index - tilesX)))
-                    edges.add(new Edge(index, index - tilesX, 1));
+                    edges.add(new Edge(index, index - tilesX, edgeWeight));
+
+                if (j - 1 >= 0 && i + 1 < tilesY && (!invalidNodes.contains(index - 1 + tilesX)))
+                    edges.add(new Edge(index, index - 1 + tilesX, diagonalWeight));
+
+                if (j + 1 < tilesX && i + 1 < tilesY && (!invalidNodes.contains(index + 1 + tilesX)))
+                    edges.add(new Edge(index, index + 1 + tilesX, diagonalWeight));
+
+                if (j + 1 < tilesX && i - 1 >= 0 && (!invalidNodes.contains(index + 1 - tilesX)))
+                    edges.add(new Edge(index, index + 1 - tilesX, diagonalWeight));
 
                 if (i - 1 >= 0 && j - 1 >= 0 && (!invalidNodes.contains(index - 1 - tilesX)))
-                    edges.add(new Edge(index, index - 1 - tilesX, (float)Math.sqrt(2)));
+                    edges.add(new Edge(index, index - 1 - tilesX, diagonalWeight));
 
                 adjacencyList.put(index, edges);
 
