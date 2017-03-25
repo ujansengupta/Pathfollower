@@ -15,6 +15,10 @@ public class GraphSearch
         DIJKSTRA, ASTAR
     }
 
+    public enum HEURISTIC {
+        MANHATTAN, EUCLIDEAN
+    }
+
     public int fill = 0;
     private float heuristicWeight = 0;
 
@@ -25,6 +29,7 @@ public class GraphSearch
     private PriorityQueue<Integer> openList;
     private Set<Integer> closedList;
 
+    private HEURISTIC heuristic = HEURISTIC.EUCLIDEAN;
 
     private compareCost comparator = new compareCost();
 
@@ -64,7 +69,7 @@ public class GraphSearch
 
         openList.add(startNode);
         gMap.put(startNode, 0f);
-        fMap.put(startNode, 1.01f * euclideanDistanceHeuristic(startNode, endNode, graph.nodeMap));
+        fMap.put(startNode, 1.05f * heuristicCost(startNode, endNode, graph.nodeMap, graph.edgeWeight, heuristic));
 
         while (!openList.isEmpty())
         {
@@ -101,7 +106,7 @@ public class GraphSearch
                             break;
                     }
 
-                    fMap.put(currentNeighbor, newCost + heuristicWeight * euclideanDistanceHeuristic(currentNeighbor, endNode, graph.nodeMap));
+                    fMap.put(currentNeighbor, newCost + heuristicWeight * heuristicCost(currentNeighbor, endNode, graph.nodeMap, graph.edgeWeight, heuristic));
 
                     openList.add(currentNeighbor);
                     prevNode.put(currentNeighbor, currentNode);
@@ -110,8 +115,10 @@ public class GraphSearch
 
             closedList.add(currentNode);
             fill = closedList.size();
-
         }
+
+        System.out.println("Total space consumed : " + (gMap.size() + fMap.size() + prevNode.size() + openList.size() + closedList.size()) + " new elements");
+
 
         return getPath(startNode, endNode);
     }
@@ -139,17 +146,21 @@ public class GraphSearch
         return path;
     }
 
-
-
-    float euclideanDistanceHeuristic (int node1, int node2, Map<Integer, Node> map)
+    float heuristicCost (int node1, int node2, Map<Integer, Node> map, float edgeWeight, HEURISTIC heuristic)
     {
-        return (float) (Math.sqrt(Math.pow((map.get(node2).location.x - map.get(node1).location.x), 2) +
-                Math.pow((map.get(node2).location.y - map.get(node1).location.y), 2)));
-    }
+        switch (heuristic)
+        {
+            case MANHATTAN:
+                return edgeWeight * (Math.abs(map.get(node2).location.x - map.get(node1).location.x) +
+                        Math.abs(map.get(node2).location.y - map.get(node1).location.y));
+            case EUCLIDEAN:
+                return edgeWeight * (float) (Math.sqrt(Math.pow((map.get(node2).location.x - map.get(node1).location.x), 2) +
+                        Math.pow((map.get(node2).location.y - map.get(node1).location.y), 2)));
 
-    float manhattanDistanceHeuristic(int node1, int node2, Map<Integer, Node> map)
-    {
-        return (map.get(node2).location.x - map.get(node1).location.x) + (map.get(node2).location.y - map.get(node1).location.y);
+            default:
+                return edgeWeight * (float) (Math.sqrt(Math.pow((map.get(node2).location.x - map.get(node1).location.x), 2) +
+                        Math.pow((map.get(node2).location.y - map.get(node1).location.y), 2)));
+        }
     }
 
 

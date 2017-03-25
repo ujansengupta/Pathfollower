@@ -86,8 +86,18 @@ public class Environment
     void createObstacles()
     {
         PVector obstacleColor = new PVector(123, 116, 214);
-        obstacles.add(new Obstacle(this.app, new PVector(0.25f * NUM_TILES.x, 0.25f * NUM_TILES.y), new PVector(10, 10), obstacleColor, NUM_TILES));
-        obstacles.add(new Obstacle(this.app, new PVector(0.50f * NUM_TILES.x, 0.50f * NUM_TILES.y), new PVector(10, 10), obstacleColor, NUM_TILES));
+
+        /* Outer layer */
+        obstacles.add(new Obstacle(this.app, new PVector(0.10f * NUM_TILES.x, 0.35f * NUM_TILES.y), new PVector(4, 20), obstacleColor, NUM_TILES));
+        obstacles.add(new Obstacle(this.app, new PVector(0.90f * NUM_TILES.x, 0.35f * NUM_TILES.y), new PVector(4, 20), obstacleColor, NUM_TILES));
+        obstacles.add(new Obstacle(this.app, new PVector(0.35f * NUM_TILES.x, 0.10f * NUM_TILES.y), new PVector(20, 4), obstacleColor, NUM_TILES));
+        obstacles.add(new Obstacle(this.app, new PVector(0.35f * NUM_TILES.x, 0.90f * NUM_TILES.y), new PVector(20, 4), obstacleColor, NUM_TILES));
+
+        /* Inner layer */
+        obstacles.add(new Obstacle(this.app, new PVector(0.50f * NUM_TILES.x, 0.20f * NUM_TILES.y), new PVector(4, 10), obstacleColor, NUM_TILES));
+        obstacles.add(new Obstacle(this.app, new PVector(0.50f * NUM_TILES.x, 0.68f * NUM_TILES.y), new PVector(4, 10), obstacleColor, NUM_TILES));
+        obstacles.add(new Obstacle(this.app, new PVector(0.25f * NUM_TILES.x, 0.50f * NUM_TILES.y), new PVector(10, 4), obstacleColor, NUM_TILES));
+        obstacles.add(new Obstacle(this.app, new PVector(0.65f * NUM_TILES.x, 0.50f * NUM_TILES.y), new PVector(10, 4), obstacleColor, NUM_TILES));
 
 
         for (Obstacle obstacle : obstacles)

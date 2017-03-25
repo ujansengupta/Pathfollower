@@ -40,16 +40,14 @@ public class Engine extends PApplet
     public void setup()
     {
         NUM_TILES = new PVector(50, 50);
-        startNode = new PVector(5, 5);
+        startNode = new PVector(4, 18);
         endNode = new PVector(48, 48);
 
         environment = new Environment(this, new PVector(scrWidth, scrHeight), NUM_TILES);
         pathFinder = new PathFinder(this, environment);
         pathFinder.findPath(startNode, endNode, searchMode);
 
-
         frameRate(60);
-        //noLoop();
     }
 
     public void draw()
@@ -82,8 +80,6 @@ public class Engine extends PApplet
 
     public void mousePressed()
     {
-   /*     System.out.println("Mouse X = " + (mouseX/environment.getTileSize().x));
-        System.out.println("Mouse Y = " + (mouseY/environment.getTileSize().y));*/
 
         if ((int)(mouseX/environment.getTileSize().x) == startNode.x && (int) (mouseY/environment.getTileSize().y) == startNode.y)
         {
