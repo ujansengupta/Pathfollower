@@ -92,19 +92,21 @@ public class PathFinder
 
     public void renderSearch()
     {
-        for (int node : search.getClosedList())
+        if (path != null)
         {
-            environment.colorNode(node, new PVector(71, 153 , 131));
+            for (int node : search.getClosedList())
+            {
+                environment.colorNode(node, new PVector(71, 153 , 131));
+            }
+
+            for (int node : path)
+            {
+                environment.colorNode(node, new PVector(153, 71 , 97));
+            }
+
+            environment.colorNode(startIndex, new PVector(255, 0, 0));
+            environment.colorNode(endIndex, new PVector(0, 255, 0));
         }
-
-        for (int node : path)
-        {
-            environment.colorNode(node, new PVector(153, 71 , 97));
-        }
-
-        environment.colorNode(startIndex, new PVector(255, 0, 0));
-        environment.colorNode(endIndex, new PVector(0, 255, 0));
-
     }
 
 

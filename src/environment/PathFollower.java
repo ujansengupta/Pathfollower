@@ -31,6 +31,7 @@ public class PathFollower
         this.character = character;
         this.numTiles = numTiles;
         this.tileSize = tileSize;
+        this.path = new ArrayList<>();
     }
 
     public int getTargetIndex()
@@ -38,9 +39,10 @@ public class PathFollower
         return targetIndex;
     }
 
-    public void followPath(ArrayList<Integer> path) {
-
-        this.path = new ArrayList<>();
+    public void followPath(ArrayList<Integer> path)
+    {
+        this.path.clear();
+        targetIndex = pathOffset;
 
         for (int index : path) {
             this.path.add(new PVector((index % numTiles.x) * tileSize.x + tileSize.x / 2, (index / numTiles.x) * tileSize.y + tileSize.y / 8));
@@ -65,19 +67,22 @@ public class PathFollower
 
     public void update()
     {
-        character.velocity = Seek.getKinematic(character.position, currentTarget, maxVelocity).velocity;
-        character.rotation = Align.getSteering(character, currentTarget, maxRotation, maxAngularAccel, ROS, ROD).angular;
-
-        if (character.velocity.mag() == 0  && targetIndex < path.size() - 1)
+        if (path != null && path.size() > 0)
         {
-            targetIndex += pathOffset;
+            character.velocity = Seek.getKinematic(character.position, currentTarget, maxVelocity).velocity;
+            character.rotation = Align.getSteering(character, currentTarget, maxRotation, maxAngularAccel, ROS, ROD).angular;
 
-            if (targetIndex >= path.size())
-                targetIndex = (path.size() - 1);
+            if (character.velocity.mag() == 0  && targetIndex < path.size() - 1)
+            {
+                targetIndex += pathOffset;
 
-            currentTarget = path.get(targetIndex);
+                if (targetIndex >= path.size())
+                    targetIndex = (path.size() - 1);
+
+                currentTarget = path.get(targetIndex);
+            }
+
+            character.move();
         }
-
-        character.move();
     }
 }

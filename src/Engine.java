@@ -48,11 +48,11 @@ public class Engine extends PApplet
 
         pathFollower = new PathFollower(environment.getPlayer(), NUM_TILES, environment.getTileSize());
 
-        startNode = environment.getPlayer().getGridLocation();
+        /*startNode = environment.getPlayer().getGridLocation();
         endNode = new PVector(48, 48);
 
 
-        pathFollower.followPath(pathFinder.findPath(startNode, endNode, searchMode));
+        pathFollower.followPath(pathFinder.findPath(startNode, endNode, searchMode));*/
 
         frameRate(60);
     }
@@ -132,7 +132,7 @@ public class Engine extends PApplet
         endNode = new PVector((int)(mouseX/environment.getTileSize().x), (int)(mouseY/environment.getTileSize().y));
         startNode = environment.getPlayer().getGridLocation();
 
-        pathFollower.changePath(pathFinder.findPath(startNode, endNode, searchMode));
+        pathFollower.followPath(pathFinder.findPath(startNode, endNode, searchMode));
     }
 
     public void pauseAnimation()

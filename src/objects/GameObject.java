@@ -28,8 +28,8 @@ public class GameObject extends Kinematic
         {
             object = app.createShape(app.GROUP);
             circle = app.createShape(app.ELLIPSE, XPos, YPos, diameter, diameter);
-            triangle = app.createShape(app.TRIANGLE, XPos + diameter/5f, YPos - diameter/2.15f,
-                    XPos + diameter/5f, YPos + diameter/2.15f, XPos + diameter, YPos);
+            triangle = app.createShape(app.TRIANGLE, XPos + diameter/5f, YPos - diameter/2f,
+                    XPos + diameter/5f, YPos + diameter/2f, XPos + diameter, YPos);
 
             object.addChild(circle);
             object.addChild(triangle);
