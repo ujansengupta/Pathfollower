@@ -40,6 +40,7 @@ public class FlockingImplementation implements AnimationControls
 
     Character leader;
 
+    PVector tileSize;
     PVector cohesionVelocity, separationVelocity, alignmentVelocity, goalVelocity;
     PVector tempSeparation, tempAlignment;
     PVector centerOfMass;
@@ -47,12 +48,13 @@ public class FlockingImplementation implements AnimationControls
 
     SteeringOutput steering;
 
-    public FlockingImplementation(PApplet app, int scrWidth, int scrHeight, int numBoids)
+    public FlockingImplementation(PApplet app, int scrWidth, int scrHeight, int numBoids, PVector tileSize)
     {
         this.app = app;
         this.scrWidth = scrWidth;
         this.scrHeight = scrHeight;
         this.numBoids = numBoids;
+        this.tileSize = tileSize;
 
         init();
     }
@@ -78,7 +80,7 @@ public class FlockingImplementation implements AnimationControls
 
         for (int i = 0; i<numBoids; i++)
         {
-            boidList.add(new Character(this.app, new PVector(randInt(0, scrWidth), randInt(0, scrHeight))));
+            boidList.add(new Character(this.app, new PVector(randInt(0, scrWidth), randInt(0, scrHeight)), tileSize));
         }
 
         spawnLeader(new PVector(randInt(0, scrWidth), randInt(0, scrHeight)));
@@ -138,7 +140,7 @@ public class FlockingImplementation implements AnimationControls
 
     public void spawnLeader(PVector position)
     {
-        Character leader = new Character(this.app, position);
+        Character leader = new Character(this.app, position, tileSize);
         leader.enableWander(scrWidth, scrHeight);
         leader.changeWanderVelocity(MAX_VELOCITY);
         leader.initCrumbs();

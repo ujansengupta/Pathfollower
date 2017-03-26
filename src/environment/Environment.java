@@ -27,6 +27,7 @@ public class Environment
 
     private List<Obstacle> obstacles;
     private Set<Integer> invalidNodes;
+
     private Character player;
     public Graph gameGraph;
 
@@ -39,7 +40,6 @@ public class Environment
 
         invalidNodes = new HashSet<>();
         obstacles = new ArrayList<>();
-        player = new Character(app, startPosition);
 
         createTiles();
         createObstacles();
@@ -47,14 +47,40 @@ public class Environment
         gameGraph = new Graph();
         gameGraph.buildGraph(invalidNodes, NUM_TILES);
 
+        player = new Character(app, new PVector(10, 10), tileSize);
+
     }
 
     public void update()
     {
         drawGraph();
-        //player.drawShape();
+        drawObstacles();
+        updatePlayer();
     }
 
+    public void updatePlayer()
+    {
+        player.drawShape();
+        player.drawCrumbs(true);
+    }
+
+    public void drawGraph()
+    {
+        for (int i = 0; i < NUM_TILES.y; i++)
+        {
+            for (int j = 0; j < NUM_TILES.x; j++) {
+                app.rect(j * tileSize.x, (i) * tileSize.y, tileSize.x, tileSize.y);
+            }
+        }
+    }
+
+    public void drawObstacles()
+    {
+        for (Obstacle obstacle : obstacles)
+        {
+            obstacle.draw(tileSize);
+        }
+    }
 
 
     public PVector getTileSize()
@@ -67,21 +93,11 @@ public class Environment
         return NUM_TILES;
     }
 
-
-    public void drawGraph()
+    public Character getPlayer()
     {
-        for (int i = 0; i < NUM_TILES.y; i++)
-        {
-            for (int j = 0; j < NUM_TILES.x; j++) {
-                app.rect(j * tileSize.x, (i) * tileSize.y, tileSize.x, tileSize.y);
-            }
-        }
-
-        for (Obstacle obstacle : obstacles)
-        {
-            obstacle.draw(tileSize);
-        }
+        return player;
     }
+
 
     void createObstacles()
     {
@@ -108,6 +124,7 @@ public class Environment
     {
         tileSize = new PVector(width/NUM_TILES.x, height/NUM_TILES.y);
     }
+
 
     public void colorNode(int index, PVector color)
     {

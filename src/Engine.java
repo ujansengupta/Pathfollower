@@ -1,6 +1,7 @@
 import environment.Environment;
 import environment.GraphSearch;
 import environment.PathFinder;
+import environment.PathFollower;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -19,6 +20,7 @@ public class Engine extends PApplet
 
     Environment environment;
     PathFinder pathFinder;
+    PathFollower pathFollower;
     PVector startNode;
     PVector endNode;
     boolean isStartMoving = false;
@@ -40,12 +42,17 @@ public class Engine extends PApplet
     public void setup()
     {
         NUM_TILES = new PVector(50, 50);
-        startNode = new PVector(4, 18);
-        endNode = new PVector(48, 48);
 
         environment = new Environment(this, new PVector(scrWidth, scrHeight), NUM_TILES);
         pathFinder = new PathFinder(this, environment);
-        pathFinder.findPath(startNode, endNode, searchMode);
+
+        pathFollower = new PathFollower(environment.getPlayer(), NUM_TILES, environment.getTileSize());
+
+        startNode = environment.getPlayer().getGridLocation();
+        endNode = new PVector(48, 48);
+
+
+        pathFollower.followPath(pathFinder.findPath(startNode, endNode, searchMode));
 
         frameRate(60);
     }
@@ -54,8 +61,9 @@ public class Engine extends PApplet
     {
         background(170);
 
-        environment.update();
         pathFinder.renderSearch();
+        pathFollower.update();
+        environment.update();
 
     }
 
@@ -80,8 +88,7 @@ public class Engine extends PApplet
 
     public void mousePressed()
     {
-
-        if ((int)(mouseX/environment.getTileSize().x) == startNode.x && (int) (mouseY/environment.getTileSize().y) == startNode.y)
+        /*if ((int)(mouseX/environment.getTileSize().x) == startNode.x && (int) (mouseY/environment.getTileSize().y) == startNode.y)
         {
             isStartMoving = true;
         }
@@ -89,14 +96,17 @@ public class Engine extends PApplet
         if ((int)(mouseX/environment.getTileSize().x) == endNode.x && (int) (mouseY/environment.getTileSize().y) == endNode.y)
         {
             isEndMoving = true;
-        }
+        }*/
 
+        endNode = new PVector((int)(mouseX/environment.getTileSize().x), (int)(mouseY/environment.getTileSize().y));
+
+        pathFollower.changePath(pathFinder.findPath(environment.getPlayer().getGridLocation(), endNode, searchMode));
 
     }
 
     public void mouseDragged()
     {
-        if (isStartMoving)
+        /*if (isStartMoving)
         {
             startNode = new PVector((int)(mouseX/environment.getTileSize().x), (int)(mouseY/environment.getTileSize().y));
             pathFinder.findPath(startNode, endNode, searchMode);
@@ -106,7 +116,10 @@ public class Engine extends PApplet
         {
             endNode = new PVector((int)(mouseX/environment.getTileSize().x), (int)(mouseY/environment.getTileSize().y));
             pathFinder.findPath(startNode, endNode, searchMode);
-        }
+        }*/
+
+        endNode = new PVector((int)(mouseX/environment.getTileSize().x), (int)(mouseY/environment.getTileSize().y));
+        pathFinder.findPath(startNode, endNode, searchMode);
     }
 
     public void mouseReleased()

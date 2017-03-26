@@ -34,7 +34,7 @@ public class BasicMotion implements AnimationControls
 
     KinematicOutput seekOutput;
 
-    public BasicMotion(PApplet app, int scrWidth, int scrHeight)
+    public BasicMotion(PApplet app, int scrWidth, int scrHeight, PVector tileSize)
     {
         this.app = app;
         this.scrWidth = scrWidth;
@@ -44,7 +44,7 @@ public class BasicMotion implements AnimationControls
         assignTargets();
 
         PVector startPos = targetList.get(targetIndex);
-        character = new Character(app, new PVector(startPos.x, startPos.y));
+        character = new Character(app, new PVector(startPos.x, startPos.y), tileSize);
         character.initCrumbs();
         targetPos = acquireNextTarget();
 

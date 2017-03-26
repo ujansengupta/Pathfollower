@@ -34,14 +34,14 @@ public class WanderImplementation implements AnimationControls
 
     float targetRotation;
 
-    public WanderImplementation(PApplet app, int scrWidth, int scrHeight, Character character)
+    public WanderImplementation(PApplet app, int scrWidth, int scrHeight, Character character, PVector tileSize)
     {
         this.app = app;
         this.scrWidth = scrWidth;
         this.scrHeight = scrHeight;
 
         startPos = new PVector(scrWidth/2, scrHeight/2);
-        this.character = (character == null) ? new Character(app, new PVector(startPos.x, startPos.y)) : character;
+        this.character = (character == null) ? new Character(app, new PVector(startPos.x, startPos.y), tileSize) : character;
         this.character.initCrumbs();
         targetPos = new PVector(startPos.x, startPos.y);
         targetRotation = 0;

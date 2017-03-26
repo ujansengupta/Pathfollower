@@ -5,6 +5,7 @@ import processing.core.PVector;
 
 import java.util.ArrayList;
 import java.lang.Runtime;
+import java.util.Collections;
 
 /**
  * Created by ujansengupta on 3/21/17.
@@ -50,8 +51,6 @@ public class PathFinder
         this.prevEnd = endNode;
         this.mode = mode;
 
-
-
         Runtime run = Runtime.getRuntime();
 
         long initialMemory = run.totalMemory() - run.freeMemory();
@@ -72,6 +71,8 @@ public class PathFinder
                 break;
         }
 
+        Collections.reverse(path);                                   // Since the path is returned in the reverse order
+
         int end = app.millis();
         long finalMemory = run.totalMemory() - run.freeMemory();
         System.out.println("Final Memory : " + finalMemory/Math.pow(10, 6) + " MB");
@@ -79,6 +80,12 @@ public class PathFinder
         System.out.println("Time taken : " + (end - start) + " milliseconds");
         System.out.println("Fill : " + search.fill + " nodes");
         System.out.println("Path Length : " + path.size() + " nodes");
+
+
+        System.out.println("Path : \n");
+
+        for (int x : path)
+            System.out.println(x);
 
         return path;
     }

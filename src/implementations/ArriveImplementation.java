@@ -26,14 +26,14 @@ public class ArriveImplementation implements AnimationControls
     Mode mode;
 
 
-    public ArriveImplementation(PApplet app, int scrWidth, int scrHeight)
+    public ArriveImplementation(PApplet app, int scrWidth, int scrHeight, PVector tileSize)
     {
         this.app = app;
         this.scrWidth = scrWidth;
         this.scrHeight = scrHeight;
 
         startPos = new PVector(scrWidth/2, scrHeight/2);
-        character = new Character(app, new PVector(startPos.x, startPos.y));
+        character = new Character(app, new PVector(startPos.x, startPos.y), tileSize);
         character.initCrumbs();
         targetPos = new PVector(startPos.x, startPos.y);
 

@@ -51,6 +51,7 @@ public class Obstacle
     {
         app.fill(color.x, color.y, color.z);
         app.rect(((int)corner.x + 1)* tileSize.x, ((int)corner.y + 1) * tileSize.y, (size.x - 2) * tileSize.x, (size.y - 2) * tileSize.y, cornerRadius);
+        app.noFill();
     }
 
 

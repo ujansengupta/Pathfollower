@@ -9,17 +9,20 @@ import processing.core.PVector;
 
 public class Character extends GameObject
 {
-
     static float CHAR_DIAMETER = 20;
-    PVector CHAR_COLOR = new PVector(0, 0, 0);
+    private PVector CHAR_COLOR = new PVector(0, 0, 0);
+    private PVector tileSize;
 
     Crumbs crumbs;
     WanderImplementation wander;
 
-    public Character(PApplet app, PVector startPos)
+    public Character(PApplet app, PVector startPos, PVector tileSize)
     {
         super(app, startPos, CHAR_DIAMETER);
+
+        initCrumbs();
         setColor(CHAR_COLOR);
+        this.tileSize = tileSize;
     }
 
     public void changeColor(PVector color)
@@ -35,6 +38,11 @@ public class Character extends GameObject
 
         rotation = mapToRange(rotation);
         orientation += rotation;
+    }
+
+    public PVector getGridLocation()
+    {
+        return new PVector((int) (position.x/tileSize.x), (int)(position.y/tileSize.y));
     }
 
 
@@ -68,7 +76,7 @@ public class Character extends GameObject
 
     public void enableWander(int scrWidth, int scrHeight)
     {
-        wander = new WanderImplementation(this.app, scrWidth, scrHeight, this);
+        wander = new WanderImplementation(this.app, scrWidth, scrHeight, this, tileSize);
     }
 
     public void changeWanderVelocity(float velocity)
