@@ -34,13 +34,11 @@ public class PathFollower
         return targetIndex;
     }
 
-    public void followPath(ArrayList<Integer> path)
-    {
+    public void followPath(ArrayList<Integer> path) {
 
         this.path = new ArrayList<>();
 
-        for (int index : path)
-        {
+        for (int index : path) {
             this.path.add(new PVector((index % numTiles.x) * tileSize.x + tileSize.x / 2, (index / numTiles.x) * tileSize.y + tileSize.y / 8));
         }
 
