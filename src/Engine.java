@@ -98,9 +98,8 @@ public class Engine extends PApplet
             isEndMoving = true;
         }*/
 
-        endNode = new PVector((int)(mouseX/environment.getTileSize().x), (int)(mouseY/environment.getTileSize().y));
-
-        pathFollower.changePath(pathFinder.findPath(environment.getPlayer().getGridLocation(), endNode, searchMode));
+        if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height)
+            targetChanged();
 
     }
 
@@ -118,14 +117,22 @@ public class Engine extends PApplet
             pathFinder.findPath(startNode, endNode, searchMode);
         }*/
 
-        endNode = new PVector((int)(mouseX/environment.getTileSize().x), (int)(mouseY/environment.getTileSize().y));
-        pathFinder.findPath(startNode, endNode, searchMode);
+        if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height)
+            targetChanged();
     }
 
     public void mouseReleased()
     {
         isStartMoving = false;
         isEndMoving = false;
+    }
+
+    public void targetChanged()
+    {
+        endNode = new PVector((int)(mouseX/environment.getTileSize().x), (int)(mouseY/environment.getTileSize().y));
+        startNode = environment.getPlayer().getGridLocation();
+
+        pathFollower.changePath(pathFinder.findPath(startNode, endNode, searchMode));
     }
 
     public void pauseAnimation()

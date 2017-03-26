@@ -14,11 +14,12 @@ import java.util.ArrayList;
  */
 public class Obstacle
 {
-    private static int cornerRadius = 10;
+    private static int cornerRadius = 20;
     private PVector centerPosition;
     private ArrayList<PVector> tileLocations;
     private Set<Integer> tileIndex;
 
+    public PVector backgroundColor;
     public PVector color;
     public PVector corner;
     public PVector size;
@@ -31,6 +32,7 @@ public class Obstacle
         this.color = color;
         this.corner = upperLeft;
         this.size = size;
+        backgroundColor = new PVector(66, 244, 206);
 
         tileLocations = new ArrayList<>();
         tileIndex = new HashSet<>();
@@ -49,8 +51,11 @@ public class Obstacle
 
     public void draw(PVector tileSize)
     {
+        app.fill(backgroundColor.x, backgroundColor.y, backgroundColor.z, 20);
+        app.rect((int) corner.x * tileSize.x, (int) corner.y * tileSize.y, size.x * tileSize.x, size.y * tileSize.y, cornerRadius);
+
         app.fill(color.x, color.y, color.z);
-        app.rect(((int)corner.x + 1)* tileSize.x, ((int)corner.y + 1) * tileSize.y, (size.x - 2) * tileSize.x, (size.y - 2) * tileSize.y, cornerRadius);
+        app.rect(((int)corner.x + 1) * tileSize.x, ((int)corner.y + 1) * tileSize.y, (size.x - 2) * tileSize.x, (size.y - 2) * tileSize.y, cornerRadius);
         app.noFill();
     }
 

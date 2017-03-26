@@ -35,11 +35,9 @@ public class PathFinder
 
     public ArrayList<Integer> findPath(PVector startNode, PVector endNode, GraphSearch.SEARCHMODE mode)
     {
-        System.out.println("\n" + "Mode : " + mode + "\n");
+        /*System.out.println("\n" + "Mode : " + mode + "\n");
         System.out.println("Start Node : " + startNode.x + ", " + startNode.y);
-        System.out.println("End Node : " + endNode.x + ", " + endNode.y + "\n");
-
-
+        System.out.println("End Node : " + endNode.x + ", " + endNode.y + "\n");*/
 
         startIndex = (int) (startNode.y * numTiles.y + startNode.x);
         endIndex = (int) (endNode.y * numTiles.y + endNode.x);
@@ -54,7 +52,7 @@ public class PathFinder
         Runtime run = Runtime.getRuntime();
 
         long initialMemory = run.totalMemory() - run.freeMemory();
-        System.out.println("Initial Memory : " + initialMemory/Math.pow(10, 6) + " MB");
+        //System.out.println("Initial Memory : " + initialMemory/Math.pow(10, 6) + " MB");
         int start = app.millis();
 
         switch (mode)
@@ -75,7 +73,8 @@ public class PathFinder
 
         int end = app.millis();
         long finalMemory = run.totalMemory() - run.freeMemory();
-        System.out.println("Final Memory : " + finalMemory/Math.pow(10, 6) + " MB");
+
+        /*System.out.println("Final Memory : " + finalMemory/Math.pow(10, 6) + " MB");
         System.out.println("Memory consumed : " + (finalMemory - initialMemory)/Math.pow(10, 3) + " kB");
         System.out.println("Time taken : " + (end - start) + " milliseconds");
         System.out.println("Fill : " + search.fill + " nodes");
@@ -85,7 +84,7 @@ public class PathFinder
         System.out.println("Path : \n");
 
         for (int x : path)
-            System.out.println(x);
+            System.out.println(x);*/
 
         return path;
     }

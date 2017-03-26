@@ -47,13 +47,13 @@ public class Environment
         gameGraph = new Graph();
         gameGraph.buildGraph(invalidNodes, NUM_TILES);
 
-        player = new Character(app, new PVector(10, 10), tileSize);
+        player = new Character(app, new PVector(width/2, height/2), tileSize);
 
     }
 
     public void update()
     {
-        drawGraph();
+        //drawGraph();
         drawObstacles();
         updatePlayer();
     }
