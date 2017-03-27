@@ -19,8 +19,10 @@ public class PathFollower
     private PVector currentTarget;
     private int targetIndex = 0;
 
-    private float maxVelocity = 2f;
-    private float maxRotation = 2 * (float) Math.PI, maxAngularAccel = 0.08f;  /* Kinematic maxRotation = 0.5f; Steering maxRotation = 2 * (float)Math.PI */
+    private float targetSwitchDistance = 1f;
+
+    private float maxVelocity = 3f;
+    private float maxRotation = 2 * (float) Math.PI, maxAngularAccel = 0.1f;
     private float ROS = 0.1f;
     private float ROD = 0.5f;
 
@@ -42,27 +44,13 @@ public class PathFollower
     public void followPath(ArrayList<Integer> path)
     {
         this.path.clear();
-        targetIndex = pathOffset;
+        targetIndex = 0;
 
         for (int index : path) {
             this.path.add(new PVector((index % numTiles.x) * tileSize.x + tileSize.x / 2, (index / numTiles.x) * tileSize.y + tileSize.y / 8));
         }
 
         this.currentTarget = this.path.get(targetIndex);
-    }
-
-    public void changePath(ArrayList<Integer> path)
-    {
-        this.path.clear();
-        targetIndex = pathOffset;
-
-        for (int index : path)
-        {
-            this.path.add(new PVector((index % numTiles.x) * tileSize.x + tileSize.x / 2, (index / numTiles.x) * tileSize.y + tileSize.y / 8));
-        }
-
-        this.currentTarget = this.path.get(targetIndex);
-
     }
 
     public void update()
@@ -72,7 +60,7 @@ public class PathFollower
             character.velocity = Seek.getKinematic(character.position, currentTarget, maxVelocity).velocity;
             character.rotation = Align.getSteering(character, currentTarget, maxRotation, maxAngularAccel, ROS, ROD).angular;
 
-            if (character.velocity.mag() == 0  && targetIndex < path.size() - 1)
+            if (character.velocity.mag() < targetSwitchDistance  && targetIndex < path.size() - 1)
             {
                 targetIndex += pathOffset;
 
